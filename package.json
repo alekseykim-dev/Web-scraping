@@ -1,0 +1,16 @@
+{
+  "name": "Web scraping",
+  "packageManager": "yarn@3.6.0",
+  "scripts": {
+    "dev": "ts-node index.ts"
+  },
+  "dependencies": {
+    "@types/node": "^20.12.7",
+    "nodemon": "^3.1.0",
+    "puppeteer": "^22.7.0",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
