@@ -1,14 +1,23 @@
 import puppeteer from "puppeteer";
-const fs = require("fs");
-import { Browser } from "puppeteer";
-(async () => {
+import { MongoClient } from "mongodb";
+require("dotenv").config();
+// MongoDB connection URI and client setup
+const uri = process.env.DB;
+const client = new MongoClient(uri);
+
+async function main() {
+  await client.connect();
+  console.log("Connected successfully to MongoDB");
+
+  const database = client.db("Books");
+  const collection = database.collection("books");
+
   // Launch the browser and open a new blank page
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   const url = "https://books.toscrape.com/";
 
   await page.goto(url);
-
   await page.setViewport({ width: 1080, height: 1024 });
 
   const bookData = await page.evaluate((url) => {
@@ -34,20 +43,35 @@ import { Browser } from "puppeteer";
     };
 
     const bookPods = Array.from(document.querySelectorAll(".product_pod"));
-    const data = bookPods.map((book: any) => ({
+    return bookPods.map((book: any) => ({
       title: book.querySelector("h3 a")?.getAttribute("title"),
-      price: convertPrice(book.querySelector(".price_color")?.innerText),
-      imgSrc: url + book.querySelector("img")?.getAttribute("src"),
+      price: convertPrice(book.querySelector(".price_color")?.textContent),
+      imgSrc: book.querySelector("img")?.src,
       rating: convertRating(book.querySelector(".star-rating")?.classList[1]),
     }));
-    return data;
   }, url);
 
   console.log(bookData);
+
+  const operations = bookData.map((book) => ({
+    updateOne: {
+      filter: { title: book.title }, // Assuming title is unique
+      update: { $setOnInsert: book },
+      upsert: true,
+    },
+  }));
+
+  // Insert the data into MongoDB
+  const result = await collection.bulkWrite(operations, { ordered: false });
+  console.log(
+    `Matched ${result.matchedCount}, Modified ${result.modifiedCount}, Upserts ${result.upsertedCount}`
+  );
+
+  // Close the browser
   await browser.close();
 
-  fs.writeFile("data.json", JSON.stringify(bookData), (err: any) => {
-    if(err) throw err;
-    console.log("JSON data is saved.");
-  });
-})();
+  // Close the MongoDB connection
+  await client.close();
+}
+
+main().catch(console.error);

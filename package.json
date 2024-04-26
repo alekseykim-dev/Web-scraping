@@ -2,15 +2,22 @@
   "name": "Web scraping",
   "packageManager": "yarn@3.6.0",
   "scripts": {
-    "dev": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "dev": "ts-node data.ts",
+    "test": "ts-node test.ts"
   },
   "dependencies": {
     "@types/node": "^20.12.7",
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.5.0",
     "nodemon": "^3.1.0",
     "puppeteer": "^22.7.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/puppeteer": "^7.0.4",
     "typescript": "^5.4.5"
   }
 }
