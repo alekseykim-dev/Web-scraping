@@ -3,6 +3,7 @@
   "packageManager": "yarn@3.6.0",
   "scripts": {
     "start": "ts-node index.ts",
+    "node": "ts-node amazon.ts",
     "dev": "ts-node data.ts",
     "test": "ts-node test.ts"
   },

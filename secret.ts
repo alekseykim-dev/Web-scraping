@@ -1,3 +1,4 @@
-export const email = "Alex";
-export const password = "KimRoman51";
+import 'dotenv/config'
 
+export const email = process.env.email;
+export const password = process.env.password;

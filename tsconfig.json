@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "dom"],  // Corrected the typo here
+    "lib": ["es5", "es6", "dom"],
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
@@ -9,5 +9,5 @@
     "moduleResolution": "node",
     "jsx": "react"
   },
-  "include": ["./src/**/*"]
+  "include": ["*.ts"]
 }

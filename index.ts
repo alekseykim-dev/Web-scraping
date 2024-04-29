@@ -64,7 +64,7 @@ async function main() {
   // Insert the data into MongoDB
   const result = await collection.bulkWrite(operations, { ordered: false });
   console.log(
-    `Matched ${result.matchedCount}, Modified ${result.modifiedCount}, Upserts ${result.upsertedCount}`
+    `Matched ${result.matchedCount}, Modified ${result.modifiedCount}, Upserts ${result.upsertedCount}`,
   );
 
   // Close the browser
